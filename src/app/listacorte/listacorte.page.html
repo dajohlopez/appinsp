@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Suministros en corte</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button color="tertiary" fill="outline" (click)="back()">
+        <ion-icon slot="end" name="undo"></ion-icon>
+      </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <ion-toolbar color="tertiary">
+      <ion-searchbar showCancelButton="focus" 
+                    cancelButtonText="Custom Cancel"
+                    placeholder="Buscar Cliente..."
+                    (ionChange)="getItems($event)"
+                    animated>
+      </ion-searchbar>
+
+      <ion-item>
+        <ion-label>Zona:</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="zonadm" >
+          <ion-select-option *ngFor="let zona of zonas" [value]="zona.nombre">{{ zona.nombre }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label>Libro inicio:</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="libroi" >
+          <ion-select-option *ngFor="let libroi of rutas" [value]="libroi.nombre">{{ libroi.nombre }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Libro fin:</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="librof" >
+          <ion-select-option *ngFor="let librof of rutas" [value]="librof.nombre">{{ librof.nombre }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div style="margin-top: 10px;" display="block">
+        <ion-button type="submit" color="success" (click)="pend()">Pendientes</ion-button>
+      </div>
+
+      <!--
+      <ion-item>
+          <ion-label>Fecha Inicio</ion-label>
+          <ion-datetime displayFormat="DD/MM/YYYY" min="2019-01-01" max="2025-12-31" [(ngModel)]="fechainicio" type="text"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label>Fecha Final</ion-label>
+          <ion-datetime displayFormat="DD/MM/YYYY" min="2019-01-01" max="2025-12-31" [(ngModel)]="fechafin" type="text"></ion-datetime>
+        </ion-item>
+        <div style="margin-top: 10px;">
+          <ion-button type="submit" color="success" (click)="pendientes()">Pendientes</ion-button>
+          <ion-button type="submit" color="danger" (click)="revisados()">Revisados</ion-button>
+        </div>
+      -->
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list *ngIf="corteItem.length === 0"> 
+      <ion-item *ngFor="let i of [1,1,1,1,1,1,1]">
+        <ion-label >
+          <ion-skeleton-text width="50%"></ion-skeleton-text>
+          <ion-skeleton-text width="100%"></ion-skeleton-text>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="corteItem.length > 0" >    
+      <ion-item-sliding *ngFor = "let corte of corteItem">
+        <ion-item-options side="start">
+          <ion-item-option color="danger" (click)="loadMap(corte.lat, corte.lng)">Ver</ion-item-option>
+        </ion-item-options>
+        <ion-item>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Suministro: {{corte.suministro}}</ion-card-title>
+              <ion-card-subtitle>Cliente: {{corte.nombres}}</ion-card-subtitle>
+            </ion-card-header>
+
+            <ion-card-content>
+              Periodo: {{corte.periodo}}
+            </ion-card-content>
+          </ion-card>
+        </ion-item>
+        
+        <ion-item-options side="end">
+          <ion-item-option color="secondary" *ngIf="corte.estado == 0" (click)="cargar(corte.id)">Inspeccionar</ion-item-option>
+          <ion-item-option color="success" *ngIf="corte.estado == 1" (click)="mensaje()">Mostrar</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <ion-infinite-scroll threshold="150px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="crescent"
+        loadingText="Cargando más datos...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+  </ion-content>

@@ -1,0 +1,29 @@
+<ion-app>
+  <ion-split-pane>
+    <ion-menu>
+      <ion-header>
+        <ion-toolbar>
+          <ion-item>
+            <ion-avatar slot="start">
+            </ion-avatar>
+            <ion-label>{{serviceUsuario.getUserName()}}</ion-label>
+          </ion-item>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-menu-toggle auto-hide="false" *ngFor="let menu of menuService.perfilMenu">
+            <ion-item [routerDirection]="'root'"(click)="Menu(menu.flag)">
+              <ion-icon slot="start" [name]="menu.icon"></ion-icon>
+              <ion-label>
+                {{menu.label}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-button expand="full" (click)="salir()">Salir</ion-button>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet main></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

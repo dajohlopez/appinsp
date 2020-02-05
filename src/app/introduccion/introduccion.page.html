@@ -1,0 +1,23 @@
+<ion-content>
+  <ion-slides pager="true" [options]="slideOpts" class="slide">
+      <ion-slide>
+        <div class="contenido">
+          <ion-img src="/src/img/slide1.png" class="imagenes"></ion-img>
+          <h1 class="titulo">Bienvenido a la aplicación para registrar inspecciones</h1>
+          <p class="descripcion">Podrás ingresar las inspecciones asignadas, solicita tu usuario y contraseña al administrador</p>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <h1>Slide 2</h1>
+      </ion-slide>
+      <ion-slide>
+        <h1>Slide 3</h1>
+      </ion-slide>
+      <ion-slide>
+          <ion-button (click)="toIntro()">
+            <ion-icon name="arrow-forward"></ion-icon>
+            Continuar con el aplicativo       
+          </ion-button>
+        </ion-slide>
+    </ion-slides>
+</ion-content>

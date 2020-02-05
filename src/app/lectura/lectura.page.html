@@ -1,0 +1,242 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Inspeccion de Lectura</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="back()" color="tertiary" fill="outline">
+        <ion-icon slot="start" name="undo" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <form [formGroup]="postagen" (ngSubmit)="guardarLectura()">
+      <ion-item-divider color="dark">
+        <ion-label>1. Datos del Cliente</ion-label>
+      </ion-item-divider>    
+      <ion-item>
+        <ion-label position="floating">Suministro:</ion-label>  
+        <ion-input type="text" readonly [(ngModel)]="cliente.suministro" value="{{cliente.suministro}}" formControlName="suministro"></ion-input>
+        <ion-input type="hidden" [(ngModel)]="idusuario" value="{{idusuario}}" formControlName="idusuario" ></ion-input>
+        <ion-input type="hidden" [(ngModel)]="idlectura" value="{{idlectura}}" formControlName="idlectura" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Codigo ruta</ion-label>
+        <ion-input type="text" [(ngModel)]="cliente.rutasuministro" value="{{cliente.rutasuministro}}" formControlName="rutasuministro" readonly></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nombres</ion-label>
+        <ion-input type="text" [(ngModel)]="cliente.nombres" value="{{cliente.nombres}}" formControlName="nombres" readonly></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Direccion</ion-label>
+        <ion-input type="text" [(ngModel)]="cliente.direccion" value="{{cliente.direccion}}" formControlName="direccion" readonly></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Direccion electrica</ion-label>
+        <ion-input type="text" [(ngModel)]="cliente.delectrica" value="{{cliente.delectrica}}" formControlName="delectrica" readonly></ion-input>
+      </ion-item>
+
+      <ion-item-divider color="dark">
+        <ion-label>2. Datos del Medidor</ion-label>
+      </ion-item-divider>
+        
+      <ion-item>
+        <ion-label position="floating">Tipo medidor</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="lectura.tmedidor" formControlName="tmedidor">
+          <ion-select-option value="0">Electromecánico</ion-select-option>
+          <ion-select-option value="1">Electrónico</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Tipo conexion</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="lectura.tconexion" formControlName="tconexion">
+          <ion-select-option value="0">Trifásico</ion-select-option>
+          <ion-select-option value="1">Monofásico</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Estado medidor</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="lectura.estadomedidor" formControlName="estadomedidor">
+          <ion-select-option value="0">Bueno</ion-select-option>
+          <ion-select-option value="1">Trabado</ion-select-option>
+          <ion-select-option value="2">Mica opaca</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Serie medidor</ion-label>
+        <ion-input type="text" [(ngModel)]="cliente.serie" value="{{cliente.serie}}" formControlName="serie" readonly></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Tipo de Lectura</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="lectura.tipolectura" formControlName="tipolectura" (ionChange)="option_select($event)">
+          <ion-select-option *ngFor="let tipolec of tlecturas" [value]="tipolec.id">{{ tipolec.tipolectura }} {{tipolec.codigo}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Lectura anterior</ion-label>
+        <ion-input type="text" [(ngModel)]="lectura.lanterior" value="{{lectura.lanterior}}" formControlName="lanterior" readonly></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Lectura actual</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.lactual" formControlName="lactual"></ion-input>
+      </ion-item>
+
+      <ion-item-divider color="dark">
+        <ion-label>3. Datos del Predio</ion-label>
+      </ion-item-divider>
+
+      <ion-item>
+        <ion-label position="floating">Tipo</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="lectura.tipo" formControlName="tipo">
+          <ion-select-option value="0">Propio</ion-select-option>
+          <ion-select-option value="1">Familiar</ion-select-option>
+          <ion-select-option value="2">Alquilado</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Construcción</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="lectura.construccion" formControlName="construccion">
+          <ion-select-option value="0">Noble</ion-select-option>
+          <ion-select-option value="1">Rústico</ion-select-option>
+          <ion-select-option value="2">En construcción</ion-select-option>
+          <ion-select-option value="3">Terreno</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Uso</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="lectura.uso" formControlName="uso">
+          <ion-select-option value="0">Vivienda</ion-select-option>
+          <ion-select-option value="1">Comercio</ion-select-option>
+          <ion-select-option value="2">Industrial</ion-select-option>
+          <ion-select-option value="3">Comunitario</ion-select-option>
+          <ion-select-option value="4">Edificio</ion-select-option>
+          <ion-select-option value="5">Taller</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Número de pisos</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.npisos" formControlName="npisos"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Situación</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="lectura.situacion" formControlName="situacion">
+          <ion-select-option value="0">Habitado</ion-select-option>
+          <ion-select-option value="1">Deshabitado</ion-select-option>
+          <ion-select-option value="2">Abandonado</ion-select-option>
+          <ion-select-option value="3">Otro</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Tipo de negocio</ion-label>
+        <ion-input type="text" [(ngModel)]="lectura.tnegocio" formControlName="tnegocio"></ion-input>
+      </ion-item>
+
+      <ion-item-divider color="dark">
+        <ion-label>4. Recursos Materiales</ion-label>
+      </ion-item-divider>
+
+      <ion-item>
+        <ion-label position="floating">Medidor</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.medidor" formControlName="medidor" [attr.disabled]="actmat" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Cable concéntrico</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.cablec" formControlName="cablec" [attr.disabled]="actmat" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Conector bimetálico</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.conectorb" formControlName="conectorb" [attr.disabled]="actmat" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Curva PVC</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.curvapvc" formControlName="curvapvc" [attr.disabled]="actmat" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Templador</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.templador" formControlName="templador" [attr.disabled]="actmat" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Cinta aislante</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.cintaa" formControlName="cintaa" [attr.disabled]="actmat" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Caja portamedidor</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.cajap" formControlName="cajap" [attr.disabled]="actmat" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Tubo fogo</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.tubof" formControlName="tubof" [attr.disabled]="actmat" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Alambre de amarre</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.alambre" formControlName="alambre" [attr.disabled]="actmat" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Clavos</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.clavos" formControlName="clavos" [attr.disabled]="actmat" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Interruptor termomagnético</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.termomagnetico" formControlName="termomagnetico" [attr.disabled]="actmat" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Cemento</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.cemento" formControlName="cemento" [attr.disabled]="actmat" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Tubo PVC</ion-label>
+        <ion-input type="number" [(ngModel)]="lectura.tubopcv" formControlName="tubopcv" [attr.disabled]="actmat" ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Observaciones</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="lectura.obslectura" formControlName="obslectura">
+          <ion-select-option *ngFor="let tipoobs of obslectura" [value]="tipoobs.observacion">{{ tipoobs.observacion }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Comentarios</ion-label>
+        <ion-input type="text" [(ngModel)]="lectura.observacion" formControlName="observacion"></ion-input>
+      </ion-item>
+
+      <ion-row>
+        <ion-col size="6">
+          <ion-button expand="full"
+                      shape="round"
+                      (click)="camara()">
+            <ion-icon slot="start" name="camera"></ion-icon>
+            Cámara
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="6">
+          <ion-button expand="full"
+                      shape="round"
+                      (click)="libreria()">
+            <ion-icon slot="start" name="images"></ion-icon>
+            Galería
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    
+      <ion-row>
+        <ion-col size="3" *ngFor="let image of tempImages">
+          <ion-card>
+            <img [src]="image">
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <div style="margin-top: 40px;">
+        <ion-button type="submit" expand="full" color="danger">Guardar</ion-button>  
+      </div>
+
+    </form>
+  </ion-list>
+</ion-content>

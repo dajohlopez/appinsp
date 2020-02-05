@@ -1,0 +1,7 @@
+{
+  "name": "appinsp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

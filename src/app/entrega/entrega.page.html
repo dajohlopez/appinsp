@@ -1,0 +1,140 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Inspeccion de Entrega</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="back()" color="tertiary" fill="outline">
+        <ion-icon slot="start" name="undo" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <form [formGroup]="formentrega" (ngSubmit)="grabarEntrega()">
+      <ion-item-divider color="light">
+        <ion-label>1. Datos del Cliente</ion-label>
+      </ion-item-divider> 
+      <ion-item> 
+        <ion-label position="floating">Suministro:</ion-label>  
+        <ion-input type="text" readonly [(ngModel)]="cliente.suministro" value="{{cliente.suministro}}" formControlName="suministro"></ion-input>
+        <ion-input type="hidden" [(ngModel)]="idusuario" value="{{idusuario}}" formControlName="idusuario" ></ion-input>
+        <ion-input type="hidden" [(ngModel)]="identrega" value="{{identrega}}" formControlName="identrega" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Codigo ruta</ion-label>
+        <ion-input type="text" [(ngModel)]="cliente.rutasuministro" value="{{cliente.rutasuministro}}" formControlName="rutasuministro" readonly></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nombres</ion-label>
+        <ion-input type="text" [(ngModel)]="cliente.nombres" value="{{cliente.nombres}}" formControlName="nombres" readonly></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Direccion</ion-label>
+        <ion-input type="text" [(ngModel)]="cliente.direccion" value="{{cliente.direccion}}" formControlName="direccion" readonly></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Direccion electrica</ion-label>
+        <ion-input type="text" [(ngModel)]="cliente.delectrica" value="{{cliente.delectrica}}" formControlName="delectrica" readonly></ion-input>
+      </ion-item>
+      <ion-item-divider color="light">
+        <ion-label>2. Datos del Medidor</ion-label>
+      </ion-item-divider>
+      <ion-item>
+        <ion-label position="floating">Tipo medidor</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="entrega.tmedidor" formControlName="tmedidor">
+          <ion-select-option value="0">Electromecánico</ion-select-option>
+          <ion-select-option value="1">Electrónico</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Tipo conexion</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="entrega.tconexion" formControlName="tconexion">
+          <ion-select-option value="0">Trifásico</ion-select-option>
+          <ion-select-option value="1">Monofásico</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Estado medidor</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="entrega.estadomedidor" formControlName="estadomedidor">
+          <ion-select-option value="0">Bueno</ion-select-option>
+          <ion-select-option value="1">Trabado</ion-select-option>
+          <ion-select-option value="2">Mica opaca</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Serie medidor</ion-label>
+        <ion-input type="text" [(ngModel)]="cliente.serie" value="{{cliente.serie}}" formControlName="serie" readonly></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Lectura anterior</ion-label>
+        <ion-input type="text" [(ngModel)]="entrega.lanterior" value="{{entrega.lanterior}}" formControlName="lanterior" readonly></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Lectura actual</ion-label>
+        <ion-input type="number" [(ngModel)]="entrega.lactual" formControlName="lactual"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Giro del negocio</ion-label>
+        <ion-input type="text" [(ngModel)]="entrega.gnegocio" formControlName="gnegocio"></ion-input>
+      </ion-item>
+      <ion-item-divider color="medium">
+        <ion-label>¿Recibo en el predio?</ion-label>
+      </ion-item-divider>
+      <ion-item>
+        <ion-label position="floating">Boletin</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="entrega.boletin" formControlName="boletin">
+          <ion-select-option value="SI">SI</ion-select-option>
+          <ion-select-option value="NO">NO</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Recibo</ion-label>
+        <ion-select multiple="false" placeholder="Seleccione" [(ngModel)]="entrega.recibo" formControlName="recibo">
+          <ion-select-option value="SI">SI</ion-select-option>
+          <ion-select-option value="NO">NO</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Observaciones</ion-label>
+        <ion-input type="text" aria-readonly="true" [(ngModel)]="entrega.observacion" formControlName="observacion"></ion-input>
+      </ion-item>
+
+      <ion-row>
+          <ion-col size="6">
+            <ion-button expand="full"
+                        shape="round"
+                        (click)="camara()">
+              <ion-icon slot="start" name="camera"></ion-icon>
+              Cámara
+            </ion-button>
+          </ion-col>
+  
+          <ion-col size="6">
+            <ion-button expand="full"
+                        shape="round"
+                        (click)="libreria()">
+              <ion-icon slot="start" name="images"></ion-icon>
+              Galería
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      
+        <ion-row>
+          <ion-col size="3" *ngFor="let image of tempImages">
+            <ion-card>
+              <img [src]="image">
+            </ion-card>
+          </ion-col>
+        </ion-row>
+
+
+      <div style="margin-top: 40px;">
+        <ion-button type="submit" expand="full" color="danger">Guardar</ion-button>  
+      </div>
+    </form>
+  </ion-list>  
+</ion-content>
